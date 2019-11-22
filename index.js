@@ -1,4 +1,5 @@
 const cron = require('cron');
+const nodemailer = require('nodemailer');
 
 const { trans } = require("./mailtransporter");
 const { domainName } = require("./config");

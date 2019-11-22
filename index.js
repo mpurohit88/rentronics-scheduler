@@ -31,10 +31,9 @@ const cronJob = cron.job("0 */1 * * * *", function () {
 
     const mail = {
       from: 'admin@' + domainName,
-      to: 'avindrasharma.rs2211@gmail.com, mpurohit88@gmail.com',
+      to: 'ravindrasharma.rs2211@gmail.com, mpurohit88@gmail.com',
       // to: director.email,
-      subject: 'Rentronics Scheduler',
-      text: 'activate your account ',
+      subject: 'Birhtday Wishess',
       html: htmlToSend
     }
 

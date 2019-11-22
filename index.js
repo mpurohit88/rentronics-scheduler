@@ -21,7 +21,7 @@ var readHTMLFile = function (path, callback) {
 const cronJob = cron.job("0 */1 * * * *", function () {
   // perform operation e.g. GET request http.get() etc.
 
-  readHTMLFile(__dirname + 'birthdayTemplate.html', function (err, html) {
+  readHTMLFile(__dirname + '/birthdayTemplate.html', function (err, html) {
 
     var template = handlebars.compile(html);
     var replacements = {

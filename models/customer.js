@@ -4,7 +4,7 @@ const Customer = function (params) {
   this.dbName = params.dbName;
 };
 
-Customer.prototype.getBirthDate = function () {
+Customer.prototype.getCustomerDetails = function () {
   const that = this;
 
   return new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ Customer.prototype.getBirthDate = function () {
 
       if (!error) {
         connection.changeUser({ database: that.dbName });
-        connection.query(`Select dob, email, id From customer`, (error, rows, fields) => {
+        connection.query(`Select dob, email, id, customer_name From customer`, (error, rows, fields) => {
           if (!error) {
             resolve(rows);
           } else {

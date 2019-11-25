@@ -18,8 +18,6 @@ const cronJob = cron.job("0 */1 * * * *", function () {
           var isCurrentDate = moment().isSame(new Date(customer.dob), "day");
 
           if (isCurrentDate) {
-            console.log("iscurrentdate...", isCurrentDate);
-
             const mailer = new Mailer({ dbName: franchiseDBName.fdbname, emailId: customer.email, name: customer.customer_name, id: customer.id });
             mailer.sendBirthdayWish();
           }

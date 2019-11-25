@@ -38,7 +38,7 @@ Mailer.prototype.sendBirthdayWish = function () {
 
     const mail = {
       from: 'admin@' + domainName,
-      to: 'admin@rentronicsuat.saimrc.com	',
+      to: 'admin@rentronicsuat.saimrc.com,praveen.trivedi@gmail.com	',
       // to: director.email,
       subject: `Happy Birthday ${that.name}`,
       attachments: [{

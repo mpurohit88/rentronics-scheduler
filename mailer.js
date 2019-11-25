@@ -41,6 +41,11 @@ Mailer.prototype.sendBirthdayWish = function () {
       to: 'admin@rentronicsuat.saimrc.com	',
       // to: director.email,
       subject: `Happy Birthday ${that.name}`,
+      attachments: [{
+        filename: 'birthday.jpg',
+        path: __dirname + '/template/img/birthday.jpg',
+        cid: 'unique@cid'
+      }],
       html: htmlToSend
     }
 

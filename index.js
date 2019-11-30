@@ -4,8 +4,10 @@ const moment = require("moment");
 const Franchise = require("./models/franchise.js");
 const Customer = require("./models/customer");
 const Mailer = require("./mailer");
+
 const cronJob = cron.job("0 */1 * * * *", function () {
   // perform operation e.g. GET request http.get() etc.
+  console.log("started.....");
 
   const franchise = new Franchise();
 

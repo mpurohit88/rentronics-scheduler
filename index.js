@@ -5,28 +5,33 @@ const Franchise = require("./models/franchise.js");
 const Customer = require("./models/customer");
 const Mailer = require("./mailer");
 
+const PaymentSchedule = require("./controllers/migration/paymentSchedules");
+
+
 const cronJob = cron.job("0 */1 * * * *", function () {
   // perform operation e.g. GET request http.get() etc.
   console.log("started.....");
 
-  const franchise = new Franchise();
+  PaymentSchedule.readSchedule();
 
-  franchise.getFranchiseDBName().then((result) => {
-    result.map((franchiseDBName) => {
-      const customer = new Customer({ dbName: franchiseDBName.fdbname });
+  // const franchise = new Franchise();
 
-      customer.getCustomerDetails().then((customers) => {
-        customers.map((customer) => {
-          var isCurrentDate = moment().isSame(new Date(customer.dob), "day");
+  // franchise.getFranchiseDBName().then((result) => {
+  //   result.map((franchiseDBName) => {
+  //     const customer = new Customer({ dbName: franchiseDBName.fdbname });
 
-          if (isCurrentDate) {
-            const mailer = new Mailer({ dbName: franchiseDBName.fdbname, emailId: customer.email, name: customer.customer_name, id: customer.id });
-            mailer.sendBirthdayWish();
-          }
-        });
-      });
-    });
-  });
+  //     customer.getCustomerDetails().then((customers) => {
+  //       customers.map((customer) => {
+  //         var isCurrentDate = moment().isSame(new Date(customer.dob), "day");
+
+  //         if (isCurrentDate) {
+  //           const mailer = new Mailer({ dbName: franchiseDBName.fdbname, emailId: customer.email, name: customer.customer_name, id: customer.id });
+  //           mailer.sendBirthdayWish();
+  //         }
+  //       });
+  //     });
+  //   });
+  // });
 });
 
 cronJob.start();

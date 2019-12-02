@@ -8,7 +8,7 @@ if (env === 'uat') {
 } else if (env === 'dev') {
   dbName = 'rentrodev_test';
 } else {
-  dbName = 'rentronicnew'
+  dbName = 'rentronicsnew'
 }
 
 module.exports = { dbName: dbName, env: env };

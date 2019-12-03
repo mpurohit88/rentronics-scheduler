@@ -1,24 +1,35 @@
 const PaymentSchedules = require('../../models/migration/paymentSchedules');
 const PaymentSchedule = require('../../models/migration/paymentSchedule');
+const  fs = require("fs");
 
-const Order = require('../../api/order');
+
+
+// const Order = require('../../api/order');
 
 const readSchedule = async function () {
 
-  const result = await Order.onLogin({
-    username: "firo_auea_0042",
-    password: "h4ct3duh",
-  });
+  // const result = await Order.onLogin({
+  //   username: "firo_auea_0042",
+  //   password: "h4ct3duh",
+  // });
 
   try {
     const paymentSchedules = new PaymentSchedules();
     const scheudules = await paymentSchedules.readSchedule();
+    // console.log(scheudules);
+    
+    // let query = 'INSERT INTO payment_status(order_id, customer_id, installment_no, sub_installment_no, payment_date, payment_rec_date, payment_amt, total_paid, due_installment_amt, status, is_active, created_by, created_at) VALUES \n';
 
+    // fs.writeFile("temp.js",query, (err) => {
+    //   if(err){console.log(err)} 
+    //   console.log('Query added successfully');
+    // });
 
+    // console.log('scheudules.length', scheudules.length);
+    
     
     let totalPaid = 0;
-    let orderNo = scheudules[0].order_id;
-    
+    let orderNo = scheudules[0].order_id;    
     
     (scheudules.length > 0 ? scheudules : []).map((data, index) => {
       if(orderNo !== data.order_id){
@@ -43,9 +54,17 @@ const readSchedule = async function () {
           is_active : data.is_active,
           created_by : data.created_by,
           created_at : data.created_at,
-        });   
+        });
+        
         paymentSchedule.insertRecord();
-      }      
+        
+
+        // let rowData = ("(" + data.order_id + "," + data.customer_id + "," + data.installment_no + "," + "0," + data.payment_date + "," + data.payment_rec_date + "," + data.payment_amount + "," + totalPaid + ",0," + data.status + "," + data.is_active + "," + data.created_by + ",\'" +  data.created_at + "\'),\n");
+        // fs.appendFile("temp.js", rowData, (err) => 
+        //   { if (err) console.log(err);
+        //     // console.log("Successfully Written to File."); 
+        //   });
+      }
     });
 
     

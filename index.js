@@ -14,24 +14,24 @@ const cronJob = cron.job("0 */1 * * * *", function () {
 
   PaymentSchedule.readSchedule();
 
-  // const franchise = new Franchise();
+  const franchise = new Franchise();
 
-  // franchise.getFranchiseDBName().then((result) => {
-  //   result.map((franchiseDBName) => {
-  //     const customer = new Customer({ dbName: franchiseDBName.fdbname });
+  franchise.getFranchiseDBName().then((result) => {
+    result.map((franchiseDBName) => {
+      const customer = new Customer({ dbName: franchiseDBName.fdbname });
 
-  //     customer.getCustomerDetails().then((customers) => {
-  //       customers.map((customer) => {
-  //         var isCurrentDate = moment().isSame(new Date(customer.dob), "day");
+      customer.getCustomerDetails().then((customers) => {
+        customers.map((customer) => {
+          const isCurrentDate = moment().isSame(new Date(customer.dob), "day");
 
-  //         if (isCurrentDate) {
-  //           const mailer = new Mailer({ dbName: franchiseDBName.fdbname, emailId: customer.email, name: customer.customer_name, id: customer.id });
-  //           mailer.sendBirthdayWish();
-  //         }
-  //       });
-  //     });
-  //   });
-  // });
+          if (isCurrentDate) {
+            const mailer = new Mailer({ dbName: franchiseDBName.fdbname, emailId: customer.email, name: customer.customer_name, id: customer.id });
+            mailer.sendBirthdayWish();
+          }
+        });
+      });
+    });
+  });
 });
 
 cronJob.start();

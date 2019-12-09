@@ -15,7 +15,7 @@ Customer.prototype.getCustomerDetails = function () {
 
       if (!error) {
         connection.changeUser({ database: that.dbName });
-        connection.query(`Select dob, email, id, customer_name From customer`, (error, rows, fields) => {
+        connection.query(`Select dob, email, id, customer_name From customer limit 1`, (error, rows, fields) => {
           if (!error) {
             resolve(rows);
           } else {

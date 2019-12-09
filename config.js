@@ -1,9 +1,9 @@
 // const env = process.env.NODE_ENV;
-const env = '';
+const env = 'prod';
 
 let domainName;
 let mailPass = '';
-let mailService = 'rentronics.saimrc.com'
+let mailService = 'rentronics.a1abilities.co.nz'
 
 if (env === 'uat') {
   domainName = 'rentronicsuat.saimrc.com'

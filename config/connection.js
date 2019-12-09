@@ -6,7 +6,7 @@ if (env === 'dev' || env === 'uat' || env === 'prod') {
   dbOptions = {
     host: 'localhost',
     user: 'root',
-    password: '6mNMX9Ln0oykXKic',
+    password: '',
     port: 3306
     // database: 'rentronics'
   };

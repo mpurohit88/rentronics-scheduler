@@ -35,7 +35,7 @@ const cronJob = cron.job("0 */1 * * * *", function () {
               console.log("email...", customer.email);
               console.log("inside current date");
 
-              const mailer = new Mailer({ dbName: franchiseDBName.fdbname, emailId: customer.email, name: customer.customer_name, id: customer.id });
+              const mailer = new Mailer({ dbName: franchiseDBName.fdbname, emailId: customer.email, name: (customer.first_name + ' ' + customer.last_name), id: customer.id });
               mailer.sendBirthdayWish();
            }
           }

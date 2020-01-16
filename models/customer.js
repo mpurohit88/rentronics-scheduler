@@ -9,9 +9,7 @@ Customer.prototype.getCustomerDetails = function () {
 
   return new Promise((resolve, reject) => {
     connection.getConnection((error, connection) => {
-      if (error) {
-        throw error;
-      }
+      if (error) { throw error; }
 
       if (!error) {
         connection.changeUser({ database: that.dbName });

@@ -12,7 +12,7 @@ Franchise.prototype.getFranchiseDBName = function () {
         throw error;
       }
 
-      if (!error) {
+      if (!error) { 
         connection.changeUser({ database: dbName });
         connection.query(`Select fdbname From franchise`, (error, rows, fields) => {
           if (!error) {

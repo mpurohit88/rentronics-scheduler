@@ -10,7 +10,7 @@ if (env === 'uat') {
 } else if (env === 'prod') {
   domainName = 'rentronics.a1abilities.co.nz';
   mailService = 'rentronics.a1abilities.co.nz';
-  mailPass = '';
+  mailPass = 'y&GFh$16U';
 } else if (env === 'dev') {
   domainName = 'rentronicsdev.saimrc.com'
 } else {

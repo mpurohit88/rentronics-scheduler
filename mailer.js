@@ -37,6 +37,7 @@ Mailer.prototype.sendBirthdayWish = function () {
     const htmlToSend = template(replacements);
 
     const mail = {
+      // from: 'sktanwar.2020@gmail.com',
       from: 'admin@' + domainName,
       //to: 'mpurohit88@gmail.com	',
       cc: 'admin@' + domainName,

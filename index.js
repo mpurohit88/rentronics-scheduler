@@ -3,11 +3,17 @@ const moment = require("moment");
 
 const Franchise = require("./models/franchise.js");
 const Customer = require("./models/customer");
+const Report = require("./models/Report");
 const Mailer = require("./mailer");
+
+const pdfmake = require('pdfmake/build/pdfmake');
+const pdfFonts = require('pdfmake/build/vfs_fonts');
+
+const FinanceReportDoc = require('./GenerateReport/FinanceReportDoc.js');
 
 
 const cronJob = cron.job("0 */1 * * * *", function () {
-  console.log("scheduler is running.....");
+  console.log("DOB scheduler is running.....");
 
   const franchise = new Franchise();
 
@@ -45,4 +51,54 @@ const cronJob = cron.job("0 */1 * * * *", function () {
   });
 });
 
+       
+// const generatePaymentReport = async (reportData, franchiseDetail, order) => {
+//     pdfmake.vfs = pdfFonts.pdfMake.vfs;
+//     let doc = {
+//       pageSize: "A4",
+//       pageOrientation: "portrait",
+//       pageMargins: [30, 30, 30, 30],
+//       content: []
+//     };
+//     let financeReportDoc = FinanceReportDoc(reportData, franchiseDetail, order);
+//       if(financeReportDoc.content) {
+//         doc.content.push(financeReportDoc.content);
+//       }
+//       // console.log(doc)
+    
+//       // pdfmake.createPdf(doc).download('test.pdf');
+// }
+
+// const paymentReport = cron.job("*/5 * * * * *", function () {
+//   console.log("paymentReport scheduler is running.....");
+
+//   const franchise = new Franchise();
+
+//     franchise.getFranchiseDBName().then((franchiseResult) => {
+//       franchiseResult.map((franchiseDetail) => {
+
+//       const report = new Report({ dbName: franchiseDetail.fdbname });
+
+//         report.getActiveOrder().then((activeOrder) => {
+//           activeOrder.map(async (order) => {
+//             if(order.id != null && order.customer_id != null) {
+              
+//               const reportData = await report.getOrderReport(order.id, order.customer_id);
+//               // const orderType = await report.getOrderType(order.order_type, order.order_type_id )
+              
+//                 if(reportData != null && reportData != "") {
+//                   // console.log(reportData);
+//                   generatePaymentReport(reportData, franchiseDetail, order);
+//                 }
+              
+//               // const mailer = new Mailer({ dbName: franchiseDetail.fdbname, emailId: customer.email, name: (customer.first_name + ' ' + customer.last_name), id: customer.id });
+//               // mailer.sendBirthdayWish();
+//           }
+//         });
+//       });
+//     });
+//   });
+// });
+
+// paymentReport.start();
 cronJob.start();

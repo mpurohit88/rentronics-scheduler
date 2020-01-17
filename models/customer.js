@@ -13,7 +13,7 @@ Customer.prototype.getCustomerDetails = function () {
 
       if (!error) {
         connection.changeUser({ database: that.dbName });
-        connection.query(`Select dob, email, id, first_name, last_name From customer`, (error, rows, fields) => {
+        connection.query(`Select dob, email, id, first_name, last_name From customer WHERE MONTH(dob) = MONTH(CURRENT_DATE) AND DAY(dob) = DAY(CURRENT_DATE)`, (error, rows, fields) => {
           if (!error) {
             resolve(rows);
           } else {

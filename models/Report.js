@@ -17,7 +17,7 @@ Report.prototype.getActiveOrder = function () {
         if (!error) {
                 connection.changeUser({ database: that.dbName });
                 // connection.query('SELECT o.id as order_id, o.customer_id FROM orders as o WHERE is_active = 1 AND o.assigned_to = 4', function (error, rows, fields) {
-                connection.query('SELECT o.id, o.order_id, o.customer_id, c.first_name, c.last_name, c.address, c.mobile, c.telephone, c.email, c.postcode, DATE_FORMAT(o.order_date, \'%Y-%m-%d\') order_date, o.order_status, o.assigned_to, o.order_type, o.payment_mode, o.product_id, o.order_type_id, DATE_FORMAT(o.delivery_date, \'%Y-%m-%d\') delivery_date, DATE_FORMAT(o.delivery_time, \'%T\') delivery_time, os.order_status as order_status_name from orders as o INNER JOIN customer as c on o.customer_id = c.id INNER JOIN order_status as os on o.order_status = os.id WHERE o.is_active = 1 AND o.assigned_to = 4', function (error, rows, fields) {
+                connection.query('SELECT o.id, o.order_id, o.customer_id, c.first_name, c.last_name, c.address, c.city, c.mobile, c.telephone, c.email, c.postcode, DATE_FORMAT(o.order_date, \'%Y-%m-%d\') order_date, o.order_status, o.assigned_to, o.order_type, o.payment_mode, o.product_id, o.order_type_id, DATE_FORMAT(o.delivery_date, \'%Y-%m-%d\') delivery_date, DATE_FORMAT(o.delivery_time, \'%T\') delivery_time, os.order_status as order_status_name from orders as o INNER JOIN customer as c on o.customer_id = c.id INNER JOIN order_status as os on o.order_status = os.id WHERE o.is_active = 1 AND o.assigned_to = 4', function (error, rows, fields) {
 
               if (!error) {
                 resolve(rows);

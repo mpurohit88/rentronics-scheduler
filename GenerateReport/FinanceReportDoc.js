@@ -127,8 +127,8 @@ module.exports = function FixedOrderForm(reportData, franchiseDetail, order) {
   // const user = data.user[0]; 
 
   // console.log(reportData);
-  console.log(franchiseDetail);
-  // console.log(order);
+  // console.log(franchiseDetail);
+  console.log(order);
   // console.log('reportData',  reportData);
   // console.log(order);
 
@@ -154,29 +154,29 @@ module.exports = function FixedOrderForm(reportData, franchiseDetail, order) {
             ]
           },
           '\n',
-          // {
-          //   table: {
-          //     widths: ['*'],                    
-          //     body: [
-          //       [
-          //         { text: 'CUSTOMER DETAILS: ', style: styles.margins, bold: true, alignment: screenLeft, fontSize: 10 ,  fillColor: '#C5C7C0' }, 
-          //       ],
-          //       [                     
-          //         {style:styles.margins, text: [  
-          //           { text: customer.first_name + ' ' + customer.last_name + '\n', style: styles.fontSize9,  bold: true, fontSize: 10 }, 
-          //           { text: customer.address + ', ' + customer.city + ' - '+ customer.postcode + '\n', style: styles.fontSize9,}, 
-          //           { text: 'PH: ', style: styles.fontSize9, bold: true }, 
-          //           { text: customer.telephone + '\t\t', style: styles.fontSize9,}, 
-          //           { text: 'Mobile: ', style: styles.fontSize9, bold: true }, 
-          //           { text: customer.mobile + '\n', style: styles.fontSize9,}, 
-          //           { text: 'Email: ', style: styles.fontSize9, bold: true }, 
-          //           { text: customer.email + '\n', style: styles.fontSize9,}, 
-          //         ], lineHeight: 1.2,}
-          //       ],
-          //     ]
-          //   },
-          // },
-          // '\n',
+          {
+            table: {
+              widths: ['*'],                    
+              body: [
+                [
+                  { text: 'CUSTOMER DETAILS: ', style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 10 ,  fillColor: '#C5C7C0' }, 
+                ],
+                [                     
+                  {style:styles.margins, text: [  
+                    { text: order.first_name + ' ' + order.last_name + '\n', style: styles.fontSize9,  bold: true, fontSize: 10 }, 
+                    { text: order.address + ', ' + order.city + ' - '+ order.postcode + '\n', style: styles.fontSize9,}, 
+                    { text: 'PH: ', style: styles.fontSize9, bold: true }, 
+                    { text: order.telephone + '\t\t', style: styles.fontSize9,}, 
+                    { text: 'Mobile: ', style: styles.fontSize9, bold: true }, 
+                    { text: order.mobile + '\n', style: styles.fontSize9,}, 
+                    { text: 'Email: ', style: styles.fontSize9, bold: true }, 
+                    { text: order.email + '\n', style: styles.fontSize9,}, 
+                  ], lineHeight: 1.2,}
+                ],
+              ]
+            },
+          },
+          '\n',
           // {
           //   border: [true, false, true, true],
           //   table: {
@@ -184,7 +184,7 @@ module.exports = function FixedOrderForm(reportData, franchiseDetail, order) {
           //     body:buildTableBody(products, ['Product', 'Description', 'Payment Type'], ['name', 'description', 'paymentType'], orderType),  
           //   },
           // },
-          // '\n',   
+          '\n',   
           // {
           //   table: {
           //     widths: ['50%','50%'],

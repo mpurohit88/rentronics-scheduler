@@ -12,10 +12,10 @@ Franchise.prototype.getFranchiseDBName = function () {
         throw error;
       }
 
-      if (!error) { 
+      if (!error) {
         connection.changeUser({ database: dbName });
-        // connection.query(`Select f.fdbname, f.name as franchise_name, c.name as company_name,  c.nbzn, c.location, c.director as director_name, c.email, c.contact, c.alt_contact, c.website from company as c INNER JOIN franchise as f ON c.company_id = f.company_id`, (error, rows, fields) => {
-        connection.query(`Select fdbname From franchise`, (error, rows, fields) => {
+        connection.query(`Select f.fdbname, f.name as franchise_name, c.name as company_name,  c.nbzn, c.location, c.director as director_name, c.email, c.contact, c.alt_contact, c.website from company as c INNER JOIN franchise as f ON c.company_id = f.company_id GROUP BY f.fdbname`, (error, rows, fields) => {
+        // connection.query(`Select fdbname From franchise`, (error, rows, fields) => {
           if (!error) {
             resolve(rows);
           } else {

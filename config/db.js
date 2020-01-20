@@ -1,4 +1,4 @@
-const env = 'prod';
+const env = '';
 let dbName;
 
 if (env === 'uat') {

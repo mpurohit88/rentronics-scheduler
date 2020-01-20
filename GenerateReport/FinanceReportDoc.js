@@ -1,5 +1,5 @@
 const logo = require('../common/Logo.js');
-// import { getDate, getCurrentDate, getDateInDDMMYYYY, getCurrentDateDDMMYYYY } from '../../../../../utils/datetime';
+const { getDate,  getDateInDDMMYYYY}  = require('../common/datetime');
 const styles = require('../common/Styles.js');
 
 
@@ -17,19 +17,19 @@ function buildFinancialReportTable(data, columns, valueKeys, fromDate, toDate){
   var headerRow = [];
 
   headerRow.push(
-    { text: columns[0], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }
+    { text: columns[0], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }
   );
   headerRow.push(    
-    { text: columns[1], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }
+    { text: columns[1], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }
   );
   headerRow.push(
-    { text: columns[2], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }                   
+    { text: columns[2], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }                   
   );
   headerRow.push(
-    { text: columns[3], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }                   
+    { text: columns[3], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }                   
   );
   headerRow.push(
-    { text: columns[4], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }                   
+    { text: columns[4], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }                   
   );
   body.push(headerRow);
 
@@ -55,11 +55,11 @@ function buildFinancialReportTable(data, columns, valueKeys, fromDate, toDate){
     var dataRow = [];
     valueKeys.forEach(function(column, columnIndex) {
       if(columnIndex===0){
-        dataRow.push({ text: (index + 1), style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8,  },);
+        dataRow.push({ text: (index + 1), style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8,  },);
       }else if(columnIndex===1 || columnIndex===2) {
-        dataRow.push({ text: getDateInDDMMYYYY(row[column]), style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8,  },);
+        dataRow.push({ text: getDateInDDMMYYYY(row[column]) === 'Invalid date' ? '' :  getDateInDDMMYYYY(row[column]), style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8,  },);
       }else{
-        dataRow.push({ text: row[column.toLowerCase()], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8,  },);
+        dataRow.push({ text: row[column.toLowerCase()], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8,  },);
       }
     })
     body.push(dataRow);
@@ -71,7 +71,7 @@ function buildFinancialReportTable(data, columns, valueKeys, fromDate, toDate){
     { text: 'Total ($) ', style: styles.alignRight, bold: true, fontSize: 10, colSpan: 4 },{},{},{}
   );
   footerRow.push(    
-    { text: total.toFixed(2), style: styles.margins, bold: true, alignment: screenLeft, fontSize: 10 }
+    { text: total.toFixed(2), style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 10 }
   );
   
   body.push(footerRow);
@@ -83,19 +83,19 @@ function buildTableBody(data, columns, valueKeys, orderType) {
   var body = [];
 
   body.push([
-    { text: 'PRODUCT AND CREDIT DETAILS: ', style: styles.margins, bold: true, alignment: screenLeft, fontSize: 10, colSpan: 3,  fillColor: '#C5C7C0'}, {},{}
+    { text: 'PRODUCT AND CREDIT DETAILS: ', style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 10, colSpan: 3,  fillColor: '#C5C7C0'}, {},{}
   ]);
 
   var dataRow1 = [];
 
   dataRow1.push(
-    { text: columns[0], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }
+    { text: columns[0], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }
   );
   dataRow1.push(    
-    { text: columns[1], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }
+    { text: columns[1], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }
   );
   dataRow1.push(
-    { text: columns[2], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8 }                   
+    { text: columns[2], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8 }                   
   );
 
   body.push(dataRow1);
@@ -105,9 +105,9 @@ function buildTableBody(data, columns, valueKeys, orderType) {
 
     valueKeys.forEach(function(column) {
       if(column === 'paymentType') {
-        dataRow.push({ text: orderType[0].frequency == 1 ? 'MONTHLY PAYMENT' : orderType[0].frequency == 2 ? 'FORTNIGHTLY PAYMENT' : orderType[0].frequency == 4 ? 'WEEKLY PAYMENT': '', style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8,  },);
+        dataRow.push({ text: orderType[0].frequency == 1 ? 'MONTHLY PAYMENT' : orderType[0].frequency == 2 ? 'FORTNIGHTLY PAYMENT' : orderType[0].frequency == 4 ? 'WEEKLY PAYMENT': '', style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8,  },);
       } else {
-        dataRow.push({ text: row[column.toLowerCase()], style: styles.margins, bold: true, alignment: screenLeft, fontSize: 8,  },);
+        dataRow.push({ text: row[column.toLowerCase()], style: styles.margins, bold: true, alignment: 'screenLeft', fontSize: 8,  },);
       }
     })
     body.push(dataRow);
@@ -117,7 +117,7 @@ function buildTableBody(data, columns, valueKeys, orderType) {
 }
 
 
-module.exports = function FixedOrderForm(reportData, franchiseDetail, order) {
+module.exports = function FixedOrderForm(reportData, franchiseDetail, order, products, orderType) {
 
   // const franchise = franchiseDetail;
   // const products = data.product;
@@ -128,15 +128,15 @@ module.exports = function FixedOrderForm(reportData, franchiseDetail, order) {
 
   // console.log(reportData);
   // console.log(franchiseDetail);
-  console.log(order);
-  // console.log('reportData',  reportData);
+  // console.log('orderType',orderType);
+  // console.log('products',  products);
   // console.log(order);
 
  
 
-  var dd = {
+  let dd = {
     content: 
-      [        
+      [ 
           { 
             columns: [                 
               { text: [
@@ -177,48 +177,49 @@ module.exports = function FixedOrderForm(reportData, franchiseDetail, order) {
             },
           },
           '\n',
-          // {
-          //   border: [true, false, true, true],
-          //   table: {
-          //     widths: ['*','*','*'],                
-          //     body:buildTableBody(products, ['Product', 'Description', 'Payment Type'], ['name', 'description', 'paymentType'], orderType),  
-          //   },
-          // },
+          {
+            border: [true, false, true, true],
+            table: {
+              widths: ['*','*','*'],
+              body:buildTableBody(products, ['Product', 'Description', 'Payment Type'], ['name', 'description', 'paymentType'], orderType),  
+            },
+          },
           '\n',   
-          // {
-          //   table: {
-          //     widths: ['50%','50%'],
-          //     body: [
-          //       [
-          //         { fillColor: '#C5C7C0', colSpan: 2,
-          //           columns: [
-          //             { text: 'ORDER DETAILS: ', bold: true, fontSize:10,  },
-          //             // { text: 'From: ' + getDateInDDMMYYYY(fromDate) + '\t\t-\t\tTo: ' + getDateInDDMMYYYY(toDate) , style: styles.Header3Center},
-          //           ]
-          //         },{}
-          //       ],
-          //       [
-          //         { text: 'Order Date: ' + getDateInDDMMYYYY(order.order_date) , bold: true, fontSize: 9 },
-          //         { text: 'Delivery Date ' + getDateInDDMMYYYY(order.delivery_date), bold: true,  fontSize: 9 },
-          //       ],
-          //       [
-          //         { text: 'Rentral Type: ' + (order.order_type === 1 ? "Fix" : 'Flex'),  bold: true, fontSize: 9 },
-          //         { text: 'Status: ' + order.order_status_name,  bold: true, fontSize: 9,},                  
-          //       ],                
-          //     ]
-          //   },
-          // },
-          // '\n',
-          // {
-          //   border: [true, false, true, true],
-          //   table: {
-          //     widths: ['15%','*','*','*','*'],                
-          //     body: buildFinancialReportTable(reportData, ['#', 'Payment Date', 'Settlement Date', 'Status', 'Payment Amt ($)'], ['installment_no', 'payment_date', 'settlement_date', 'status_name', 'payment_amt'], fromDate, toDate),
-          //   },
-          // },
+          {
+            table: {
+              widths: ['50%','50%'],
+              body: [
+                [
+                  { fillColor: '#C5C7C0', colSpan: 2,
+                    columns: [
+                      { text: 'ORDER DETAILS: ', bold: true, fontSize:10,  },
+                      // { text: 'From: ' + getDateInDDMMYYYY(fromDate) + '\t\t-\t\tTo: ' + getDateInDDMMYYYY(toDate) , style: styles.Header3Center},
+                    ]
+                  },{}
+                ],
+                [
+                  { text: 'Order Date: ' + getDateInDDMMYYYY(order.order_date) , bold: true, fontSize: 9 },
+                  { text: 'Delivery Date ' + getDateInDDMMYYYY(order.delivery_date), bold: true,  fontSize: 9 },
+                ],
+                [
+                  { text: 'Rentral Type: ' + (order.order_type === 1 ? "Fix" : 'Flex'),  bold: true, fontSize: 9 },
+                  { text: 'Status: ' + order.order_status_name,  bold: true, fontSize: 9,},                  
+                ],                
+              ]
+            },
+          },
+          '\n',
+          {
+            border: [true, false, true, true],
+            table: {
+              widths: ['15%','*','*','*','*'],                
+              body: buildFinancialReportTable(reportData, ['#', 'Payment Date', 'Settlement Date', 'Status', 'Payment Amt ($)'], ['installment_no', 'payment_date', 'settlement_date', 'status_name', 'payment_amt'], reportData[0].first_date, reportData[0].last_date),
+            },
+          },
       ],  
       pageSize: 'A4',
       pageOrientation: 'portrait',
+      pageMargins: [30, 30, 30, 30],
   }
   return dd ;
 }

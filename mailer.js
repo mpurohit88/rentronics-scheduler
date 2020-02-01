@@ -37,9 +37,11 @@ Mailer.prototype.sendBirthdayWish = function () {
     const htmlToSend = template(replacements);
 
     const mail = {
+      // from: 'sktanwar.2020@gmail.com',
       from: 'admin@' + domainName,
-      to: 'admin@rentronicsuat.saimrc.com,praveen.trivedi@gmail.com	',
-      // to: director.email,
+      //to: 'mpurohit88@gmail.com	',
+      cc: 'admin@' + domainName,
+      to: that.emailId,
       subject: `Happy Birthday ${that.name}`,
       attachments: [{
         filename: 'birthday.jpg',
@@ -48,9 +50,6 @@ Mailer.prototype.sendBirthdayWish = function () {
       }],
       html: htmlToSend
     }
-
-    const scheduler = new Scheduler({ dbName: that.dbName, type: 1, customerId: that.id });
-    scheduler.saveScheduler();
 
     trans.sendMail(mail, (err, info) => {
       if (err) {

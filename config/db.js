@@ -1,4 +1,4 @@
-const env = '';
+const env = 'uat';
 let dbName;
 
 if (env === 'uat') {

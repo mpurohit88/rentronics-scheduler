@@ -2,7 +2,7 @@
 const env = 'dev';
 
 let domainName;
-let mailPass = '';
+let mailPass = 'y&GFhE16U';
 let mailService = 'rentronics.saimrc.com'
 
 if (env === 'uat') {

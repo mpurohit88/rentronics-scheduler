@@ -6,7 +6,7 @@ const Customer = require("./models/customer");
 const Mailer = require("./mailer");
 
 
-const cronJob = cron.job("0 */1 * * * *", function () {
+const cronJob = cron.job("00 00 09 * * *", function () {
   console.log("scheduler is running.....");
 
   const franchise = new Franchise();

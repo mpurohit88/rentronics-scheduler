@@ -37,9 +37,10 @@ Mailer.prototype.sendBirthdayWish = function () {
     const htmlToSend = template(replacements);
 
     const mail = {
-      from: 'admin@' + domainName,
+      from: 'Rentronics <admin@' + domainName + '>',
       //to: 'mpurohit88@gmail.com	',
       cc: 'admin@' + domainName,
+      bcc: 'mpurohit88@gmail.com,a1abilities@gmail.com',
       to: that.emailId,
       subject: `Happy Birthday ${that.name}`,
       attachments: [{

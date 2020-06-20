@@ -26,4 +26,3 @@ const cronJob = cron.job(cronTime, async function () {
 
 // paymentReport.start();
 cronJob.start();
-console.log(cronJob)

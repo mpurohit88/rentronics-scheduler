@@ -1,4 +1,4 @@
-const env = 'uat';
+const env = 'prod';
 let dbName;
 
 if (env === 'uat') {
@@ -8,7 +8,7 @@ if (env === 'uat') {
 } else if (env === 'dev') {
   dbName = 'rentrodev_test';
 } else {
-  dbName = 'rentronicsnew'
+  dbName = 'rentronics_prod'
 }
 
 module.exports = { dbName: dbName, env: env };

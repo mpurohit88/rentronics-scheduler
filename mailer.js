@@ -16,12 +16,8 @@ const Mailer = function (params) {
 
 const readHTMLFile = function (path, callback) {
   fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
-    if (err) {
-      throw err;
-    }
-    else {
-      callback(null, html);
-    }
+    if (err) { throw err;}
+    else { callback(null, html); }
   });
 };
 
@@ -29,7 +25,6 @@ Mailer.prototype.sendBirthdayWish = function () {
   const that = this;
 
   readHTMLFile(__dirname + '/template/birthdayTemplate.html', function (err, html) {
-
     const template = handlebars.compile(html);
     const replacements = {
       username: that.name
@@ -52,7 +47,7 @@ Mailer.prototype.sendBirthdayWish = function () {
     }
 
     // const mail = {      
-    //   from: 'sktanwar.2020@gmail.com',      
+    //   from: 'sktanwar.2020@gmail.com',
     //   to: 'sktanwar.2014@gmail.com',
     //   subject: `Happy Birthday Shahrukh`,
     //   attachments: [{

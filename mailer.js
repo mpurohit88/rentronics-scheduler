@@ -37,11 +37,16 @@ Mailer.prototype.sendBirthdayWish = function () {
     const htmlToSend = template(replacements);
 
     const mail = {
+<<<<<<< HEAD
       from: 'Rentronics <admin@' + domainName + '>',
       //to: 'mpurohit88@gmail.com	',
       cc: 'admin@' + domainName,
       bcc: 'mpurohit88@gmail.com,a1abilities@gmail.com',
+=======
+      from: 'admin@' + domainName,      
+>>>>>>> f37c48d18275b0bb55f7c740dd4af8fa4f2384c8
       to: that.emailId,
+      cc: 'admin@' + domainName,
       subject: `Happy Birthday ${that.name}`,
       attachments: [{
         filename: 'birthday.jpg',
@@ -50,6 +55,19 @@ Mailer.prototype.sendBirthdayWish = function () {
       }],
       html: htmlToSend
     }
+
+    // const mail = {      
+    //   from: 'sktanwar.2020@gmail.com',      
+    //   to: 'sktanwar.2014@gmail.com',
+    //   subject: `Happy Birthday Shahrukh`,
+    //   attachments: [{
+    //     filename: 'birthday.jpg',
+    //     path: __dirname + '/template/img/birthday.jpg',
+    //     cid: 'unique@cid'
+    //   }],
+    //   html: htmlToSend
+    // }
+
 
     trans.sendMail(mail, (err, info) => {
       if (err) {

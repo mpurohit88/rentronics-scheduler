@@ -5,8 +5,12 @@ const { domainName, mailPass, mailService } = require("./config");
 const mailAccountUser = 'admin@' + domainName
 const mailAccountPass = mailPass
 
+// const mailAccountUser = 'sktanwar.2020@gmail.com';
+// const mailAccountPass = '';
+
 const trans = nodemailer.createTransport(smtpTransport({
   service: mailService,
+  // service: 'GMAIL',
   tls: { rejectUnauthorized: false },
   auth: {
     user: mailAccountUser,

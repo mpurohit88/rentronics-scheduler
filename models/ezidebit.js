@@ -42,7 +42,7 @@ EzidebitPayments.prototype.GetPayments = function () {
 
     soap.createClient(wsdlUrl, (err, soapClient) => {
       soapClient.GetPayments(payParams, (err, result) => {
-        console.log("soapClient GetPayments body", result.body);
+        // console.log("soapClient GetPayments body", result.body);
         console.log("soapClient GetPayments GetPaymentsResult", result.GetPaymentsResult);
 
         fs.writeFile('ezidebitLog.txt', result.body, function (err) {

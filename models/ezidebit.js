@@ -39,8 +39,6 @@ EzidebitPayments.prototype.GetPayments = function () {
     console.log('** pay param **', payParams);
 
     soap.createClient(wsdlUrl, (err, soapClient) => {
-      console.log("wsdl client: ", soapClient);
-      console.log("wsdl client error: ", err);
       soapClient.GetPayments(payParams, (err, result) => {
         console.log("*** GetPayment Result ***", result);
         const error = result.GetPaymentsResult;

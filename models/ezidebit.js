@@ -1,4 +1,6 @@
 const soap = require('soap');
+const fs = require('fs');
+
 const connection = require('../config/connection.js');
 const { dbName } = require('../config/db.js');
 const { wsdlUrl, custUrl } = require("../config/ezidebit.js");
@@ -42,6 +44,11 @@ EzidebitPayments.prototype.GetPayments = function () {
       soapClient.GetPayments(payParams, (err, result) => {
         console.log("soapClient GetPayments body", result.body);
         console.log("soapClient GetPayments GetPaymentsResult", result.GetPaymentsResult);
+
+        fs.writeFile('ezidebitLog.txt', result.body, function (err) {
+          if (err) return console.log(err);
+          console.log('Hello World > helloworld.txt');
+        });
 
         const error = result.GetPaymentsResult;
         if (!isNullOrUndefined(err) || isNullOrUndefined(error)) {

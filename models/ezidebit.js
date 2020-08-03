@@ -45,9 +45,9 @@ EzidebitPayments.prototype.GetPayments = function () {
         console.log("soapClient GetPayments err", err);
         console.log("soapClient GetPayments GetPaymentsResult", result.GetPaymentsResult);
 
-        fs.writeFile('ezidebitLog.text', result.body, function (err) {
+        fs.writeFile('ezidebitLog.txt', result.body, function (err) {
           if (err) return console.log(err);
-          console.log('Hello World > helloworld.text');
+          console.log('Hello World > helloworld.txt');
         });
 
         const error = result.GetPaymentsResult;

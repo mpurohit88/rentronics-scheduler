@@ -42,10 +42,10 @@ EzidebitPayments.prototype.GetPayments = function () {
       soapClient.GetPayments(payParams, (err, result) => {
         const error = result.GetPaymentsResult;
         if (!isNullOrUndefined(err) || isNullOrUndefined(error)) {
-          console.log('Error...', error);
+          // console.log('Error...', error);
           reject(err);
         } else if (error.Error) {
-          console.log('Error...', error.ErrorMessage);
+          // console.log('Error...', error.ErrorMessage);
           reject(error.Error);
         } else {
           resolve(result.GetPaymentsResult);

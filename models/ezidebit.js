@@ -36,10 +36,11 @@ EzidebitPayments.prototype.GetPayments = function () {
       DateField: that.DateField,
     };
 
+    console.log('** pay param **', payParams);
+
     soap.createClient(wsdlUrl, (err, soapClient) => {
       console.log("wsdl client: ", soapClient);
       console.log("wsdl client error: ", err);
-
       soapClient.GetPayments(payParams, (err, result) => {
         const error = result.GetPaymentsResult;
         if (!isNullOrUndefined(err) || isNullOrUndefined(error)) {

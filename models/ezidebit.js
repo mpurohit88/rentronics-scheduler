@@ -40,14 +40,14 @@ EzidebitPayments.prototype.GetPayments = function () {
 
     console.log('** pay param **', payParams);
 
-    soap.createClient(wsdlUrl, (err, soapClient) => {
+    soap.createClient(wsdlUrl, [{ returnFault: true }], (err, soapClient) => {
       soapClient.GetPayments(payParams, (err, result) => {
-        // console.log("soapClient GetPayments body", result.body);
+        console.log("soapClient GetPayments err", err);
         console.log("soapClient GetPayments GetPaymentsResult", result.GetPaymentsResult);
 
-        fs.writeFile('ezidebitLog.xml', result.body, function (err) {
+        fs.writeFile('ezidebitLog.text', result.body, function (err) {
           if (err) return console.log(err);
-          console.log('Hello World > helloworld.xml');
+          console.log('Hello World > helloworld.text');
         });
 
         const error = result.GetPaymentsResult;

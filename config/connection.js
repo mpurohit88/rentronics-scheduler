@@ -7,15 +7,15 @@ if (env === 'dev' || env === 'uat' || env === 'prod') {
     host: 'localhost',
     user: 'root',
     password: 'ekLZGG7L2bUYvpBv',
-    port: 3306
-    // database: 'rentronics'
+    port: 3306,
+    database: 'rentronics_prod'
   };
 } else {
   dbOptions = {
     host: 'localhost',
     user: 'root',
     password: '',
-    // database: 'rentronics'
+    database: 'rentronics_prod'
   };
 }
 

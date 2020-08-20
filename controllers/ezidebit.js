@@ -20,8 +20,11 @@ const getPayments = async function () {
 
                 result.map(async (eziAcc) => {
                     try {
-                        // payParams.DigitalKey = 'CE927AA4-04CD-4BD7-FC5B-C2216F7D9858';
+                        
                         // payParams.fdbName = 'rentronics_prod_auso';
+                        // payParams.DigitalKey = 'CE927AA4-04CD-4BD7-FC5B-C2216F7D9858'; // original
+                        // payParams.DigitalKey = '16879669-9E65-4983-FE6A-35DFD40A4148';
+                        // payParams.DigitalKey = '4E6ACAE2-E4A9-4186-ECDD-E0B9F06785B2'; // Demo Key
 
                         payParams.DigitalKey = eziAcc.digital_key;
                         payParams.fdbName = eziAcc.fdbname;

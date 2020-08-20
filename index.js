@@ -26,3 +26,8 @@ const cronJob = cron.job(cronTime, async function () {
 
 // paymentReport.start();
 cronJob.start();
+
+// server = http.createServer(app).listen(8888, function(){
+//   var xml = require('fs').readFileSync('./apis/hello.wsdl', 'utf8');
+//    soap.listen(server, '/service', soapTest, xml);        
+// });

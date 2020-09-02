@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "cron": "^1.7.2",
     "fs": "0.0.1-security",
     "handlebars": "^4.5.3",
@@ -21,6 +21,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "pdfmake": "^0.1.63",
     "soap": "^0.31.0",
-    "util": "^0.12.3"
+    "util": "^0.12.3",
+    "xml2js": "^0.4.23"
   }
 }

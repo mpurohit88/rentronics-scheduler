@@ -1,6 +1,7 @@
 const soap = require('soap');
+const xml2js = require('xml2js');
 const fs = require('fs');
-
+const axios = require('axios');
 const connection = require('../config/connection.js');
 const { dbName } = require('../config/db.js');
 const { wsdlUrl, custUrl } = require("../config/ezidebit.js");
@@ -36,33 +37,83 @@ EzidebitPayments.prototype.GetPayments = function () {
       DateFrom: that.DateFrom,
       DateTo: that.DateTo,
       DateField: that.DateField,
+      PaymentReference: '',
+      EziDebitCustomerID: '',
+      YourSystemReference: ''
     };
 
     console.log('** pay param **', payParams);
 
-    soap.createClient(wsdlUrl, [{ returnFault: true }], (err, soapClient) => {
-      soapClient.GetPayments(payParams, (err, result) => {
-        console.log("soapClient GetPayments err", err);
-        console.log("soapClient GetPayments GetPaymentsResult", result.GetPaymentsResult);
+    let xml =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:px="https://px.ezidebit.com.au/">'
+      + '<soapenv:Header/>'
+      + '<soapenv:Body>'
+      + '<px:GetPayments>'
+      + '<px:DigitalKey>' + payParams.DigitalKey + '</px:DigitalKey>'
+      + '<px:PaymentType>' + payParams.PaymentType + '</px:PaymentType>'
+      + '<px:PaymentMethod>' + payParams.PaymentMethod + '</px:PaymentMethod>'
+      + '<px:PaymentSource>' + payParams.PaymentSource + '</px:PaymentSource>'
+      + '<px:PaymentReference></px:PaymentReference>'
+      + '<px:DateFrom>' + payParams.DateFrom + '</px:DateFrom>'
+      + '<px:DateTo>' + payParams.DateTo + '</px:DateTo>'
+      + '<px:DateField>' + payParams.DateField + '</px:DateField>'
+      + '<px:EziDebitCustomerID></px:EziDebitCustomerID>'
+      + '<px:YourSystemReference></px:YourSystemReference>'
+      + '</px:GetPayments>'
+      + '</soapenv:Body>'
+      + '</soapenv:Envelope>'
 
-        fs.writeFile('ezidebitLog.txt', result.body, function (err) {
-          if (err) return console.log(err);
-          console.log('Hello World > helloworld.txt');
+    axios.post('https://api.ezidebit.com.au/v3-5/nonpci', xml, {
+      headers:
+      {
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'https://px.ezidebit.com.au/INonPCIService/GetPayments'
+      }
+    })
+      .then(function (response) {
+        // console.log(response);
+        // convert XML to JSON
+        xml2js.parseString(response.data, (err, result) => {
+          if (err) {
+            throw err;
+          }
+
+          resolve(result["s:Envelope"]["s:Body"][0].GetPaymentsResponse[0].GetPaymentsResult[0].Data[0].Payment)
+          // `result` is a JavaScript object
+          // convert it to a JSON string
+          // const json = JSON.stringify(result, null, 4);
+
+          // // log JSON string
+          // console.log(json);
+
         });
-
-        const error = result.GetPaymentsResult;
-        if (!isNullOrUndefined(err) || isNullOrUndefined(error)) {
-          // console.log('Error...', error);
-          reject(err);
-        } else if (error.Error) {
-          // console.log('Error...', error.ErrorMessage);
-          reject(error.Error);
-        } else {
-          resolve(result.GetPaymentsResult);
-          // console.log(result.GetPaymentsResult.Data.Payment)
-        }
+      })
+      .catch(function (error) {
+        console.log(error)
       });
-    });
+    //   soap.createClient(wsdlUrl, [{ returnFault: true }], (err, soapClient) => {
+    //     soapClient.GetPayments(payParams, (err, result) => {
+    //       console.log("soapClient GetPayments err", err);
+    //       console.log("soapClient GetPayments GetPaymentsResult", result.GetPaymentsResult);
+
+    //       fs.writeFile('ezidebitLog.txt', result.body, function (err) {
+    //         if (err) return console.log(err);
+    //         console.log('Hello World > helloworld.txt');
+    //       });
+
+    //       const error = result.GetPaymentsResult;
+    //       if (!isNullOrUndefined(err) || isNullOrUndefined(error)) {
+    //         // console.log('Error...', error);
+    //         reject(err);
+    //       } else if (error.Error) {
+    //         // console.log('Error...', error.ErrorMessage);
+    //         reject(error.Error);
+    //       } else {
+    //         resolve(result.GetPaymentsResult);
+    //         // console.log(result.GetPaymentsResult.Data.Payment)
+    //       }
+    //     });
+    //   });
   });
 };
 

@@ -14,7 +14,7 @@ const getPayments = async function () {
             payParams.PaymentType = 'ALL';
             payParams.PaymentMethod = 'ALL';
             payParams.PaymentSource = 'ALL';
-            payParams.DateField = 'PAYMENT';
+            payParams.DateField = 'SETTLEMENT';
             payParams.DateFrom = getPrev5YearDate(); //getCurrentDateDBFormat();
             payParams.DateTo = getCurrentDateDBFormat(),
 

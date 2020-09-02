@@ -78,7 +78,7 @@ EzidebitPayments.prototype.GetPayments = function () {
             throw err;
           }
 
-          resolve({ data: result["s:Envelope"]["s:Body"][0].GetPaymentsResponse[0].GetPaymentsResult[0].Data[0].Payment })
+          resolve({ Data: result["s:Envelope"]["s:Body"][0].GetPaymentsResponse[0].GetPaymentsResult[0].Data[0].Payment })
 
         });
       })

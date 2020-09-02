@@ -79,12 +79,6 @@ EzidebitPayments.prototype.GetPayments = function () {
           }
 
           resolve(result["s:Envelope"]["s:Body"][0].GetPaymentsResponse[0].GetPaymentsResult[0].Data[0].Payment)
-          // `result` is a JavaScript object
-          // convert it to a JSON string
-          // const json = JSON.stringify(result, null, 4);
-
-          // // log JSON string
-          // console.log(json);
 
         });
       })

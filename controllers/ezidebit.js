@@ -26,7 +26,7 @@ const getPayments = async function () {
                         const ezidebit = new Ezidebit(payParams);
                         console.log("before get payment call");
                         const result = await ezidebit.GetPayments();
-                        console.log("after get payment call", result.Data);
+                        console.log("after get payment call", result);
                         const resultData = result.Data;
                         if (resultData) {
                             console.log('inside if condition');

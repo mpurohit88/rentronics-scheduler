@@ -120,7 +120,7 @@ EzidebitPayments.prototype.updateScheduleTable = function () {
       if (error) { throw error; }
 
       connection.changeUser({ database: that.fdbName });
-      console.log("inside model to insert into ezidebit payments", this.scheduleData)
+      console.log("inside model to insert into ezidebit payments", that.scheduleData)
       Object.values(that.scheduleData).map((data, index) => {
         let dDate = isNullOrUndefined(data.DebitDate) ? '' : getDateTime(data.DebitDate);
         let sDate = isNullOrUndefined(data.SettlementDate) ? '' : getDateTime(data.SettlementDate);

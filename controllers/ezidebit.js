@@ -29,14 +29,14 @@ const getPayments = async function () {
                         console.log("after get payment call", result);
                         const resultData = result.Data;
                         if (resultData) {
-                            // console.log('resultData', resultData);
-                            if (resultData.Payment) {
-                                ezidebit.scheduleData = resultData.Payment;
-                                await ezidebit.updateScheduleTable();
-                            }
+                            console.log('inside if condition');
+                            // if (resultData.Payment) {
+                            ezidebit.scheduleData = resultData;
+                            await ezidebit.updateScheduleTable();
+                            // }
                         }
                     } catch (ex) {
-                        // console.log("Payment Scheduler", ex);
+                        console.log("Payment Scheduler", ex);
                     }
                 });
         } catch (ex) {

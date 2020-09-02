@@ -2,7 +2,7 @@ const Franchise = require("../models/franchise.js");
 const Ezidebit = require("../models/ezidebit.js");
 
 
-const { getCurrentDateDBFormat, getNext5YearDate } = require('../common/datetime.js');
+const { getCurrentDateDBFormat, getNext5YearDate, getPrev5YearDate } = require('../common/datetime.js');
 
 const getPayments = async function () {
 
@@ -15,8 +15,8 @@ const getPayments = async function () {
             payParams.PaymentMethod = 'ALL';
             payParams.PaymentSource = 'ALL';
             payParams.DateField = 'PAYMENT';
-            payParams.DateFrom = getCurrentDateDBFormat();
-            payParams.DateTo = getNext5YearDate(),
+            payParams.DateFrom = getPrev5YearDate(); //getCurrentDateDBFormat();
+            payParams.DateTo = getCurrentDateDBFormat(),
 
                 result.map(async (eziAcc) => {
                     try {

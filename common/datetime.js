@@ -9,7 +9,7 @@ module.exports = {
     return moment(date).format("DD-MM-YYYY")
   },
 
-  getDateTime: (date) => { 
+  getDateTime: (date) => {
     return moment(date).format("YYYY-MM-DD HH:mm:ss");
   },
 
@@ -18,9 +18,12 @@ module.exports = {
   },
 
   getNext5YearDate: () => {
-    return moment().add(5, 'year').format("YYYY-MM-DD"); 
+    return moment().add(5, 'year').format("YYYY-MM-DD");
   },
 
+  getPrev5YearDate: () => {
+    return moment().subtract(5, 'year').format("YYYY-MM-DD");
+  },
 
   // const getCurrentDate() {
   //   return moment().format("MM/DD/YYYY")

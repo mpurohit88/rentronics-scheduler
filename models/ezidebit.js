@@ -122,24 +122,24 @@ EzidebitPayments.prototype.updateScheduleTable = function () {
       connection.changeUser({ database: that.fdbName });
       console.log("inside model to insert into ezidebit payments", that.scheduleData)
       Object.values(that.scheduleData).map((data, index) => {
-        let dDate = isNullOrUndefined(data.DebitDate) ? '' : getDateTime(data.DebitDate);
-        let sDate = isNullOrUndefined(data.SettlementDate) ? '' : getDateTime(data.SettlementDate);
+        // let dDate = isNullOrUndefined(data.DebitDate) ? '' : getDateTime(data.DebitDate);
+        // let sDate = isNullOrUndefined(data.SettlementDate) ? '' : getDateTime(data.SettlementDate);
 
 
         // console.log('data', sDate, dDate);
 
         let updateQuery = `UPDATE ezidebit_payments SET bankFailedReason = '${data.BankFailedReason}', bankReceiptID = '${data.BankReceiptID}', bankReturnCode = '${data.BankReturnCode}', 
-            customerName = '${data.CustomerName}', debitDate = '${dDate}', eziDebitCustomerID = '${data.EzidebitCustomerID}', invoiceID = '${data.InvoiceID}', 
+            customerName = '${data.CustomerName}', debitDate = '${data.DebitDate}', eziDebitCustomerID = '${data.EzidebitCustomerID}', invoiceID = '${data.InvoiceID}', 
             paymentAmount = '${data.PaymentAmount}', paymentID = '${data.PaymentID}', paymentMethod = '${data.PaymentMethod}', paymentReference = '${data.PaymentReference}', 
-            paymentSource = '${data.PaymentSource}', paymentStatus = '${data.PaymentStatus}', settlementDate = '${sDate}', scheduledAmount = '${data.ScheduledAmount}',
+            paymentSource = '${data.PaymentSource}', paymentStatus = '${data.PaymentStatus}', settlementDate = '${data.SettlementDate}', scheduledAmount = '${data.ScheduledAmount}',
             transactionFeeClient = '${data.TransactionFeeClient}', transactionFeeCustomer = '${data.TransactionFeeCustomer}', yourGeneralReference = '${data.YourGeneralReference}',
             yourSystemReference = '${data.YourSystemReference}', is_active = 1, updated_at = now()
-            WHERE debitDate LIKE '${dDate}%' AND ezidebitCustomerID = '${data.EzidebitCustomerID}';`;
+            WHERE debitDate LIKE '${data.DebitDate}%' AND ezidebitCustomerID = '${data.EzidebitCustomerID}';`;
 
         let insertQuery = `INSERT INTO ezidebit_payments(bankFailedReason, bankReceiptID, bankReturnCode, customerName, debitDate, eziDebitCustomerID, invoiceID, paymentAmount, paymentID, 
             paymentMethod, paymentReference, paymentSource, paymentStatus, settlementDate, scheduledAmount, transactionFeeClient, transactionFeeCustomer, yourGeneralReference, yourSystemReference, is_active)
-            VALUES ('${data.BankFailedReason}', '${data.BankReceiptID}', '${data.BankReturnCode}', '${data.CustomerName}', '${dDate}', '${data.EzidebitCustomerID}', 
-            '${data.InvoiceID}', '${data.PaymentAmount}', '${data.PaymentID}', '${data.PaymentMethod}', '${data.PaymentReference}','${data.PaymentSource}', '${data.PaymentStatus}', '${sDate}', 
+            VALUES ('${data.BankFailedReason}', '${data.BankReceiptID}', '${data.BankReturnCode}', '${data.CustomerName}', '${data.DebitDate}', '${data.EzidebitCustomerID}', 
+            '${data.InvoiceID}', '${data.PaymentAmount}', '${data.PaymentID}', '${data.PaymentMethod}', '${data.PaymentReference}','${data.PaymentSource}', '${data.PaymentStatus}', '${data.SettlementDate}', 
             '${data.ScheduledAmount}','${data.TransactionFeeClient}','${data.TransactionFeeCustomer}', '${data.YourGeneralReference}', '${data.YourSystemReference}', 1);`
 
         connection.query(updateQuery, function (error, updateResult, fields) {

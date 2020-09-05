@@ -31,6 +31,7 @@ const getPayments = async function () {
                         if (resultData) {
                             console.log('inside if condition');
                             // if (resultData.Payment) {
+                            console.log(resultData);
                             ezidebit.scheduleData = resultData;
                             await ezidebit.updateScheduleTable();
                             // }

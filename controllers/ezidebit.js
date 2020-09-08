@@ -14,7 +14,7 @@ const getPayments = async function () {
             payParams.PaymentType = 'ALL';
             payParams.PaymentMethod = 'ALL';
             payParams.PaymentSource = 'ALL';
-            payParams.DateField = 'SETTLEMENT';
+            payParams.DateField = 'PAYMENT';
             payParams.DateFrom = getPrev5YearDate(); //getCurrentDateDBFormat();
             payParams.DateTo = getCurrentDateDBFormat(),
 
@@ -26,12 +26,18 @@ const getPayments = async function () {
                         const ezidebit = new Ezidebit(payParams);
                         console.log("before get payment call");
                         const result = await ezidebit.GetPayments();
-                        console.log("after get payment call", result);
+                        // console.log("after get payment call", result);
                         const resultData = result.Data;
                         if (resultData) {
                             console.log('inside if condition');
                             // if (resultData.Payment) {
-                            console.log(resultData);
+                            // console.log(resultData);
+
+                            // let customers = [...new Set(resultData.map(dist => Number(dist.EzidebitCustomerID)))];
+                            // console.log(customers);
+                            // Object.values(resultData).map((data, index) => {
+                            //     customers.EzidebitCustomerID
+                            // });
                             ezidebit.scheduleData = resultData;
                             await ezidebit.updateScheduleTable();
                             // }

@@ -6,7 +6,7 @@ const connection = require('../config/connection.js');
 const { dbName } = require('../config/db.js');
 const { wsdlUrl, custUrl } = require("../config/ezidebit.js");
 const { isNullOrUndefined } = require('util');
-const { getDateTime } = require('../common/datetime.js');
+const { getDateTime, getDate } = require('../common/datetime.js');
 
 var EzidebitPayments = function (params) {
   this.fdbName = params.fdbName;
@@ -30,6 +30,7 @@ EzidebitPayments.prototype.GetPayments = function () {
 
   return new Promise((resolve, reject) => {
     const payParams = {
+      // DigitalKey: '3AF80E10-D1B9-4D44-1D74-CBC198226A97',
       DigitalKey: that.DigitalKey,
       PaymentType: that.PaymentType,
       PaymentMethod: that.PaymentMethod,
@@ -57,8 +58,8 @@ EzidebitPayments.prototype.GetPayments = function () {
       + '<px:DateFrom>' + payParams.DateFrom + '</px:DateFrom>'
       + '<px:DateTo>' + payParams.DateTo + '</px:DateTo>'
       + '<px:DateField>' + payParams.DateField + '</px:DateField>'
-      + '<px:EziDebitCustomerID></px:EziDebitCustomerID>'
-      + '<px:YourSystemReference></px:YourSystemReference>'
+      // + '<px:EziDebitCustomerID></px:EziDebitCustomerID>'
+      // + '<px:YourSystemReference></px:YourSystemReference>'
       + '</px:GetPayments>'
       + '</soapenv:Body>'
       + '</soapenv:Envelope>'
@@ -120,43 +121,74 @@ EzidebitPayments.prototype.updateScheduleTable = function () {
       if (error) { throw error; }
 
       connection.changeUser({ database: that.fdbName });
-      console.log("inside model to insert into ezidebit payments", that.scheduleData)
-      Object.values(that.scheduleData).map((data, index) => {
-        // let dDate = isNullOrUndefined(data.DebitDate) ? '' : getDateTime(data.DebitDate);
-        // let sDate = isNullOrUndefined(data.SettlementDate) ? '' : getDateTime(data.SettlementDate);
+      console.log("inside model to insert into ezidebit payments");
+      
+      Object.values(that.scheduleData).map(async (data, index) => {
 
-
-        // console.log('data', sDate, dDate);
-
-        let updateQuery = `UPDATE ezidebit_payments SET bankFailedReason = '${data.BankFailedReason}', bankReceiptID = '${data.BankReceiptID}', bankReturnCode = '${data.BankReturnCode}', 
-            customerName = '${data.CustomerName}', debitDate = '${data.DebitDate}', eziDebitCustomerID = '${data.EzidebitCustomerID}', invoiceID = '${data.InvoiceID}', 
-            paymentAmount = '${data.PaymentAmount}', paymentID = '${data.PaymentID}', paymentMethod = '${data.PaymentMethod}', paymentReference = '${data.PaymentReference}', 
-            paymentSource = '${data.PaymentSource}', paymentStatus = '${data.PaymentStatus}', settlementDate = '${data.SettlementDate}', scheduledAmount = '${data.ScheduledAmount}',
-            transactionFeeClient = '${data.TransactionFeeClient}', transactionFeeCustomer = '${data.TransactionFeeCustomer}', yourGeneralReference = '${data.YourGeneralReference}',
-            yourSystemReference = '${data.YourSystemReference}', is_active = 1, updated_at = now()
-            WHERE debitDate LIKE '${data.DebitDate}%' AND ezidebitCustomerID = '${data.EzidebitCustomerID}';`;
+        let whereClouse = ` WHERE debitDate = '${data.DebitDate}' AND ezidebitCustomerID = '${data.EzidebitCustomerID}' AND is_active = 1 `;
+        let selectQuery = 'SELECT * FROM ezidebit_payments ' + whereClouse + ' ORDER BY id DESC;';
 
         let insertQuery = `INSERT INTO ezidebit_payments(bankFailedReason, bankReceiptID, bankReturnCode, customerName, debitDate, eziDebitCustomerID, invoiceID, paymentAmount, paymentID, 
-            paymentMethod, paymentReference, paymentSource, paymentStatus, settlementDate, scheduledAmount, transactionFeeClient, transactionFeeCustomer, yourGeneralReference, yourSystemReference, is_active)
-            VALUES ('${data.BankFailedReason}', '${data.BankReceiptID}', '${data.BankReturnCode}', '${data.CustomerName}', '${data.DebitDate}', '${data.EzidebitCustomerID}', 
-            '${data.InvoiceID}', '${data.PaymentAmount}', '${data.PaymentID}', '${data.PaymentMethod}', '${data.PaymentReference}','${data.PaymentSource}', '${data.PaymentStatus}', '${data.SettlementDate}', 
-            '${data.ScheduledAmount}','${data.TransactionFeeClient}','${data.TransactionFeeCustomer}', '${data.YourGeneralReference}', '${data.YourSystemReference}', 1);`
+          paymentMethod, paymentReference, paymentSource, paymentStatus, settlementDate, scheduledAmount, transactionFeeClient, transactionFeeCustomer, yourGeneralReference, yourSystemReference, is_active)
+          VALUES ('${data.BankFailedReason}', '${data.BankReceiptID}', '${data.BankReturnCode}', '${data.CustomerName}', '${data.DebitDate}', '${data.EzidebitCustomerID}', 
+          '${data.InvoiceID}', '${data.PaymentAmount}', '${data.PaymentID}', '${data.PaymentMethod}', '${data.PaymentReference}','${data.PaymentSource}', '${data.PaymentStatus}', '${data.SettlementDate}', 
+          '${data.ScheduledAmount}','${data.TransactionFeeClient}','${data.TransactionFeeCustomer}', '${data.YourGeneralReference}', '${data.YourSystemReference}', 1);`
 
-        connection.query(updateQuery, function (error, updateResult, fields) {
+
+        connection.query(selectQuery, function (error, result, fields) {
           if (error) { console.log("Error...", error); reject(error); }
-          if (updateResult.changedRows === 0) {
-            connection.query(insertQuery, function (error, insertResult, fields) {
-              if (error) { console.log("Error...", error); reject(error); }
-              resolve(insertResult);
+          // console.log('selectQuery*********', selectQuery)
+          // If row already exist
+          if(result !== "" && result.length > 0 && !isNullOrUndefined(result)) {            
+            let r = result[0];
+            // console.log('selectQuery get some rows');
+            // if found a diffrent value in any column
+            // console.log(r.bankFailedReason, data.BankFailedReason , ',', r.bankReceiptID, data.BankReceiptID , ',', r.bankReturnCode, data.BankReturnCode , ',', r.customerName, data.CustomerName , ',', r.invoiceID, data.InvoiceID , ',', r.paymentAmount, data.PaymentAmount , ',', r.paymentID, data.PaymentID , ',', r.paymentMethod, data.PaymentMethod , ',', r.paymentReference, data.PaymentReference , ',', r.paymentSource, data.PaymentSource , ',', r.paymentStatus, data.PaymentStatus , ',', r.settlementDate, data.SettlementDate, ',', r.scheduledAmount, data.ScheduledAmount , ',', r.transactionFeeClient, data.TransactionFeeClient , ',', r.transactionFeeCustomer, data.TransactionFeeCustomer , ',', r.yourGeneralReference, data.YourGeneralReference , ',', r.yourSystemReference, data.YourSystemReference);
+            // console.log(r.bankFailedReason != data.BankFailedReason, r.bankReceiptID != data.BankReceiptID, r.bankReturnCode != data.BankReturnCode, r.customerName != data.CustomerName, r.invoiceID != data.InvoiceID, r.paymentAmount != data.PaymentAmount, r.paymentID != data.PaymentID, r.paymentMethod != data.PaymentMethod, r.paymentReference != data.PaymentReference, r.paymentSource != data.PaymentSource, r.paymentStatus != data.PaymentStatus, r.settlementDate != data.SettlementDate, r.scheduledAmount != data.ScheduledAmount, r.transactionFeeClient != data.TransactionFeeClient, r.transactionFeeCustomer != data.TransactionFeeCustomer, r.yourGeneralReference != data.YourGeneralReference, r.yourSystemReference != data.YourSystemReference, r.settlementDate, data.SettlementDate)
+            
+            if(r.bankFailedReason != data.BankFailedReason 
+                || r.bankReceiptID != data.BankReceiptID 
+                || r.bankReturnCode != data.BankReturnCode 
+                || r.customerName != data.CustomerName 
+                || r.invoiceID != data.InvoiceID 
+                || r.paymentAmount != data.PaymentAmount 
+                || r.paymentID != data.PaymentID 
+                || r.paymentMethod != data.PaymentMethod 
+                || r.paymentReference != data.PaymentReference 
+                || r.paymentSource != data.PaymentSource 
+                || r.paymentStatus != data.PaymentStatus 
+                // || r.settlementDate != data.SettlementDate
+                || r.scheduledAmount != data.ScheduledAmount 
+                || r.transactionFeeClient != data.TransactionFeeClient 
+                || r.transactionFeeCustomer != data.TransactionFeeCustomer 
+                || r.yourGeneralReference != data.YourGeneralReference 
+                || r.yourSystemReference != data.YourSystemReference                 
+            ){
+              console.log('found a new value for a column****');
+              connection.query('UPDATE ezidebit_payments SET is_active = 0, updated_at = now() ' + whereClouse, function (error, rows, fields) {
+                if (error) { console.log("Error...", error); reject(error); }
+                connection.query(insertQuery, function (error, insertedRows, fields) {
+                  if (error) { console.log("Error...", error); reject(error); }
+                  // resolve(insertedRows);       
+                });
+              });
+            }
+          }else{
+            console.log('it\'s a totally new record', data.DebitDate);
+            connection.query(insertQuery, function (error, insertedRows, fields) {
+              if (error) { console.log("Error...", error); reject(error); } 
+              // resolve(insertedRows);       
             });
-          } else {
-            resolve(updateResult);
           }
         });
+        if((index + 1) === that.scheduleData.length){
+          // console.log(index + 1, that.scheduleData.length)
+          resolve();
+        }
       });
 
       connection.release();
-      // console.log('Process Complete %d', connection.threadId);
+      console.log('Process Complete %d', connection.threadId);
     });
   });
 };

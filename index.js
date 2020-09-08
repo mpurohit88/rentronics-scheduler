@@ -18,7 +18,7 @@ const cronJob = cron.job(cronTime, async function () {
   await mails.birthdayMail();
 });
 
-ezidebit.getPayments();
+// ezidebit.getPayments();
 
 // const paymentReport = cron.job("*/5 * * * * *", async function () {
 //   console.log("paymentReport scheduler is running.....");
@@ -26,4 +26,4 @@ ezidebit.getPayments();
 // });
 
 //paymentReport.start();
-//cronJob.start();
+cronJob.start();

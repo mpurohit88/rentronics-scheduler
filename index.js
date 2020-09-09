@@ -8,22 +8,22 @@ const reports = require('./controllers/reports.js');
 
 
 
-// const cronTime = "*/5 * * * * *";
-const cronTime = "00 00 09 * * *";
+const cronTime = "*/10 * * * * *";
+// const cronTime = "00 00 09 * * *";
 
 
 const cronJob = cron.job(cronTime, async function () {
   console.log("scheduler is running.....");
   await ezidebit.getPayments();
-  await mails.birthdayMail();
+  // await mails.birthdayMail();
 });
 
-// ezidebit.getPayments();
+ezidebit.getPayments();
 
 // const paymentReport = cron.job("*/5 * * * * *", async function () {
 //   console.log("paymentReport scheduler is running.....");
 //   await reports.paymentReport();
 // });
 
-//paymentReport.start();
-cronJob.start();
+// paymentReport.start();
+// cronJob.start();

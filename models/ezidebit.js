@@ -18,6 +18,7 @@ var EzidebitPayments = function (params) {
   this.DateTo = params.DateTo;
   this.DigitalKey = params.DigitalKey;
   this.scheduleData = params.scheduleData;
+  this.order_id = params.order_id;
 };
 
 
@@ -175,6 +176,7 @@ EzidebitPayments.prototype.updateScheduleTable = function () {
             }
           }else{
             console.log('it\'s a totally new record', data.DebitDate);
+            connection.changeUser({ database: that.fdbName });
             connection.query(insertQuery, function (error, insertedRows, fields) {
               if (error) { console.log("Error...", error); reject(error); } 
               // resolve(insertedRows);       
@@ -185,6 +187,47 @@ EzidebitPayments.prototype.updateScheduleTable = function () {
           // console.log(index + 1, that.scheduleData.length)
           resolve();
         }
+      });
+
+      connection.release();
+      console.log('Process Complete %d', connection.threadId);
+    });
+  });
+};
+
+
+
+
+EzidebitPayments.prototype.getUpdatedSchedule = function ({order_id}) {
+  const that = this;
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) { throw error; }
+
+      connection.changeUser({ database: that.fdbName });
+      connection.query(`SELECT id, bankFailedReason, bankReceiptID, bankReturnCode, customerName, eziDebitCustomerID, invoiceID, paymentAmount, paymentID, paymentMethod, paymentReference, paymentSource, paymentStatus, scheduledAmount, transactionFeeClient, transactionFeeCustomer, yourGeneralReference, yourSystemReference, is_updated, is_active, created_at, updated_at,  DATE_FORMAT(debitDate, '%Y-%m-%d') AS debitDate, DATE_FORMAT(settlementDate, '%Y-%m-%d') AS settlementDate FROM ezidebit_payments WHERE yourSystemReference = '${order_id}' AND is_active = 1 AND is_updated = 0 AND paymentID NOT IN("SCHEDULED", "") ORDER BY debitDate`, function (error, result, fields) {
+        if (error) { console.log("Error...", error); reject(error); }
+        resolve(result);
+      });
+
+      connection.release();
+      console.log('Process Complete %d', connection.threadId);
+    });
+  });
+};
+
+
+
+EzidebitPayments.prototype.setScheduleUpdateForCustomer = function ({id}) {
+  const that = this;
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) { throw error; }
+
+      connection.changeUser({ database: that.fdbName });
+      connection.query(`UPDATE ezidebit_payments SET is_updated = 1 WHERE id = '${id}';`, function (error, result, fields) {
+        if (error) { console.log("Error...", error); reject(error); }
+        resolve(result);
       });
 
       connection.release();

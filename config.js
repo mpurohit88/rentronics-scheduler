@@ -1,5 +1,5 @@
 // const env = process.env.NODE_ENV;
-const env = 'prod';
+const env = 'local';
 
 let domainName;
 let mailPass = '';

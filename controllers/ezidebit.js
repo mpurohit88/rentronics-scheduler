@@ -32,15 +32,18 @@ const getPayments = async function () {
                         const ezidebit = new Ezidebit(payParams);
                         console.log("before get payment call");
                         const result = await ezidebit.GetPayments();
-                        console.log("after get payment call", result);
+                        console.log("after get payment call", result.Data);
                         const resultData = result.Data;
                         if (resultData) {
                             console.log('inside if condition');
                             
-                            ezidebit.scheduleData = resultData;
-                            console.log('***before updating Schedule of ezidebit table');
-                            await ezidebit.updateScheduleTable();
-                            console.log('***after updating Schedule of ezidebit table');
+                            ezidebit.scheduleData = resultData;                            
+                            for (const data of resultData) {
+                                console.log('***before updating Schedule of ezidebit table');
+                                await ezidebit.updateScheduleTable(data);
+                                console.log('***after updating Schedule of ezidebit table');
+                            }
+                            
 
                             let ezidebitCustomerIds = [...new Set(resultData.map(dist => Number(dist.EzidebitCustomerID)))];
                             let token = '';
@@ -51,11 +54,11 @@ const getPayments = async function () {
                             const secret = 'secret';
                             token = jwt.sign(payload, secret, options);
 
-                            console.log('***before updatePaymentSchedule');
-                            await EzidebitAPI.updatePaymentSchedule({
-                                ezidebitCustomerIds : ezidebitCustomerIds,
-                             }, token);
-                            console.log('***after updatePaymentSchedule');
+                            // console.log('***before updatePaymentSchedule');
+                            // await EzidebitAPI.updatePaymentSchedule({
+                            //     ezidebitCustomerIds : ezidebitCustomerIds,
+                            //  }, token);
+                            // console.log('***after updatePaymentSchedule');
                         }                                              
                     } catch (ex) {
                         console.log("Payment Scheduler", ex);

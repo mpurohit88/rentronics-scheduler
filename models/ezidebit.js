@@ -115,7 +115,7 @@ EzidebitPayments.prototype.GetPayments = function () {
 
 
 
-EzidebitPayments.prototype.updateScheduleTable = function () {
+EzidebitPayments.prototype.updateScheduleTable = function (data) {
   const that = this;
   return new Promise(function (resolve, reject) {
     connection.getConnection(function (error, connection) {
@@ -124,7 +124,10 @@ EzidebitPayments.prototype.updateScheduleTable = function () {
       connection.changeUser({ database: that.fdbName });
       console.log("inside model to insert into ezidebit payments");
       
-      Object.values(that.scheduleData).map(async (data, index) => {
+      // Object.values(that.scheduleData).map(async (data, index) => {
+        // for (const data of that.scheduleData) {
+          
+        
 
         let whereClouse = ` WHERE debitDate = '${data.DebitDate}' AND ezidebitCustomerID = '${data.EzidebitCustomerID}' AND is_active = 1 `;
         let selectQuery = 'SELECT * FROM ezidebit_payments ' + whereClouse + ' ORDER BY id DESC;';
@@ -136,58 +139,63 @@ EzidebitPayments.prototype.updateScheduleTable = function () {
           '${data.ScheduledAmount}','${data.TransactionFeeClient}','${data.TransactionFeeCustomer}', '${data.YourGeneralReference}', '${data.YourSystemReference}', 1);`
 
 
-        connection.query(selectQuery, function (error, result, fields) {
+        connection.query(selectQuery, (error, result, fields) => {
+          // console.log(result)
           if (error) { console.log("Error...", error); reject(error); }
-          // console.log('selectQuery*********', selectQuery)
+          // console.log('selectQuery*********', result)
           // If row already exist
-          if(result !== "" && result.length > 0 && !isNullOrUndefined(result)) {            
+          if(result.length > 0) {
             let r = result[0];
-            // console.log('selectQuery get some rows');
+            console.log('selectQuery get some rows');
             // if found a diffrent value in any column
             // console.log(r.bankFailedReason, data.BankFailedReason , ',', r.bankReceiptID, data.BankReceiptID , ',', r.bankReturnCode, data.BankReturnCode , ',', r.customerName, data.CustomerName , ',', r.invoiceID, data.InvoiceID , ',', r.paymentAmount, data.PaymentAmount , ',', r.paymentID, data.PaymentID , ',', r.paymentMethod, data.PaymentMethod , ',', r.paymentReference, data.PaymentReference , ',', r.paymentSource, data.PaymentSource , ',', r.paymentStatus, data.PaymentStatus , ',', r.settlementDate, data.SettlementDate, ',', r.scheduledAmount, data.ScheduledAmount , ',', r.transactionFeeClient, data.TransactionFeeClient , ',', r.transactionFeeCustomer, data.TransactionFeeCustomer , ',', r.yourGeneralReference, data.YourGeneralReference , ',', r.yourSystemReference, data.YourSystemReference);
             // console.log(r.bankFailedReason != data.BankFailedReason, r.bankReceiptID != data.BankReceiptID, r.bankReturnCode != data.BankReturnCode, r.customerName != data.CustomerName, r.invoiceID != data.InvoiceID, r.paymentAmount != data.PaymentAmount, r.paymentID != data.PaymentID, r.paymentMethod != data.PaymentMethod, r.paymentReference != data.PaymentReference, r.paymentSource != data.PaymentSource, r.paymentStatus != data.PaymentStatus, r.settlementDate != data.SettlementDate, r.scheduledAmount != data.ScheduledAmount, r.transactionFeeClient != data.TransactionFeeClient, r.transactionFeeCustomer != data.TransactionFeeCustomer, r.yourGeneralReference != data.YourGeneralReference, r.yourSystemReference != data.YourSystemReference, r.settlementDate, data.SettlementDate)
             
-            if(r.bankFailedReason != data.BankFailedReason 
-                || r.bankReceiptID != data.BankReceiptID 
-                || r.bankReturnCode != data.BankReturnCode 
-                || r.customerName != data.CustomerName 
-                || r.invoiceID != data.InvoiceID 
-                || r.paymentAmount != data.PaymentAmount 
-                || r.paymentID != data.PaymentID 
-                || r.paymentMethod != data.PaymentMethod 
-                || r.paymentReference != data.PaymentReference 
-                || r.paymentSource != data.PaymentSource 
-                || r.paymentStatus != data.PaymentStatus 
+            if(r.bankFailedReason != data.BankFailedReason[0]
+                || r.bankReceiptID != data.BankReceiptID[0]
+                || r.bankReturnCode != data.BankReturnCode[0]
+                || r.customerName != data.CustomerName[0]
+                || r.invoiceID != data.InvoiceID[0]
+                || r.paymentAmount != data.PaymentAmount[0]
+                || r.paymentID != data.PaymentID[0]
+                || r.paymentMethod != data.PaymentMethod[0]
+                || r.paymentReference != data.PaymentReference[0]
+                || r.paymentSource != data.PaymentSource[0]
+                || r.paymentStatus != data.PaymentStatus[0]
                 // || r.settlementDate != data.SettlementDate
-                || r.scheduledAmount != data.ScheduledAmount 
-                || r.transactionFeeClient != data.TransactionFeeClient 
-                || r.transactionFeeCustomer != data.TransactionFeeCustomer 
-                || r.yourGeneralReference != data.YourGeneralReference 
-                || r.yourSystemReference != data.YourSystemReference                 
+                || r.scheduledAmount != data.ScheduledAmount[0]
+                || r.transactionFeeClient != data.TransactionFeeClient[0]
+                || r.transactionFeeCustomer != data.TransactionFeeCustomer[0]
+                || r.yourGeneralReference != data.YourGeneralReference[0]
+                || r.yourSystemReference != data.YourSystemReference[0]            
             ){
               console.log('found a new value for a column****');
               connection.query('UPDATE ezidebit_payments SET is_active = 0, updated_at = now() ' + whereClouse, function (error, rows, fields) {
                 if (error) { console.log("Error...", error); reject(error); }
                 connection.query(insertQuery, function (error, insertedRows, fields) {
                   if (error) { console.log("Error...", error); reject(error); }
-                  // resolve(insertedRows);       
+                  resolve(insertedRows);       
                 });
               });
+            }else {
+              console.log('resolve nothing');
+              resolve();
             }
-          }else{
+          }else {
             console.log('it\'s a totally new record', data.DebitDate);
             connection.changeUser({ database: that.fdbName });
             connection.query(insertQuery, function (error, insertedRows, fields) {
               if (error) { console.log("Error...", error); reject(error); } 
-              // resolve(insertedRows);       
+              resolve(insertedRows);
             });
           }
         });
-        if((index + 1) === that.scheduleData.length){
-          // console.log(index + 1, that.scheduleData.length)
-          resolve();
-        }
-      });
+        // if((index + 1) === that.scheduleData.length){
+        //   console.log(index + 1, that.scheduleData.length)
+        //   resolve();
+        // }
+      // });
+    // }
 
       connection.release();
       console.log('Process Complete %d', connection.threadId);

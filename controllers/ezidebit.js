@@ -36,30 +36,27 @@ const getPayments = async function () {
                         const resultData = result.Data;
                         if (resultData) {
                             console.log('inside if condition');
-                            
-                            ezidebit.scheduleData = resultData;                            
+
+                            ezidebit.scheduleData = resultData;
+
                             for (const data of resultData) {
-                                console.log('***before updating Schedule of ezidebit table');
                                 await ezidebit.updateScheduleTable(data);
-                                console.log('***after updating Schedule of ezidebit table');
                             }
-                            
 
                             let ezidebitCustomerIds = [...new Set(resultData.map(dist => Number(dist.EzidebitCustomerID)))];
                             let token = '';
                             let dbPost = eziAcc.fdbname.split('_')[2];
-                            
-                            const payload = { id: 1, user_id: `user_${dbPost}_0000` };
+
+                            // const payload = { id: 1, user_id: `user_${dbPost}_0000` };
+                            const payload = { id: 1, user_id: `firs_auso_1111` };
                             const options = { expiresIn: '12h', issuer: 'https://sargatechnology.com' };
                             const secret = 'secret';
                             token = jwt.sign(payload, secret, options);
 
-                            // console.log('***before updatePaymentSchedule');
-                            // await EzidebitAPI.updatePaymentSchedule({
-                            //     ezidebitCustomerIds : ezidebitCustomerIds,
-                            //  }, token);
-                            // console.log('***after updatePaymentSchedule');
-                        }                                              
+                            await EzidebitAPI.updatePaymentSchedule({
+                                ezidebitCustomerIds: ezidebitCustomerIds,
+                            }, token);
+                        }
                     } catch (ex) {
                         console.log("Payment Scheduler", ex);
                     }

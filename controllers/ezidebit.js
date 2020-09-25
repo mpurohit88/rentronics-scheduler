@@ -53,9 +53,11 @@ const getPayments = async function () {
                             const secret = 'secret';
                             token = jwt.sign(payload, secret, options);
 
+                            console.log('start updating payment table');
                             await EzidebitAPI.updatePaymentSchedule({
                                 ezidebitCustomerIds: ezidebitCustomerIds,
                             }, token);
+                            console.log('end updating payment table');
                         }
                     } catch (ex) {
                         console.log("Payment Scheduler", ex);

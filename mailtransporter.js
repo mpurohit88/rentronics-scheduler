@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
-const { domainName, mailPass, mailService } = require("./config");
+const { domainName, mailPass, mailService } = require("./config/db.js");
 
 const mailAccountUser = 'admin@' + domainName
 const mailAccountPass = mailPass

@@ -122,7 +122,7 @@ EzidebitPayments.prototype.updateScheduleTable = function (data) {
       if (error) { throw error; }
 
       connection.changeUser({ database: that.fdbName });
-      console.log("inside model to insert into ezidebit payments");
+      // console.log("inside model to insert into ezidebit payments");
       
       // Object.values(that.scheduleData).map(async (data, index) => {
         // for (const data of that.scheduleData) {

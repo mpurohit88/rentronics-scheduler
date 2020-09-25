@@ -6,7 +6,7 @@ const { getDateTime, getDate } = require('../common/datetime.js');
 const OrderAPI = require('../api/order.js');
 const EzidebitAPI = require('../api/ezidebit.js');
 
-const { getCurrentDateDBFormat, getNext5YearDate, getPrev5YearDate } = require('../common/datetime.js');
+const { getCurrentDateDBFormat, getNext5YearDate, getPrev5YearDate, getPrev1YearDate } = require('../common/datetime.js');
 const { isNullOrUndefined } = require("util");
 const EzidebitPayments = require("../models/ezidebit.js");
 
@@ -21,7 +21,7 @@ const getPayments = async function () {
             payParams.PaymentMethod = 'ALL';
             payParams.PaymentSource = 'ALL';
             payParams.DateField = 'PAYMENT';
-            payParams.DateFrom = getPrev5YearDate(); //getCurrentDateDBFormat();
+            payParams.DateFrom = getPrev1YearDate(); //getCurrentDateDBFormat();
             payParams.DateTo = getCurrentDateDBFormat(),
 
                 result.map(async (eziAcc) => {
@@ -32,7 +32,7 @@ const getPayments = async function () {
                         const ezidebit = new Ezidebit(payParams);
                         console.log("before get payment call");
                         const result = await ezidebit.GetPayments();
-                        console.log("after get payment call", result.Data);
+                        console.log("after get payment call");
                         const resultData = result.Data;
                         if (resultData) {
                             console.log('inside if condition');
@@ -47,8 +47,8 @@ const getPayments = async function () {
                             let token = '';
                             let dbPost = eziAcc.fdbname.split('_')[2];
 
-                            // const payload = { id: 1, user_id: `user_${dbPost}_0000` };
-                            const payload = { id: 1, user_id: `firs_auso_1111` };
+                            const payload = { id: 1, user_id: `user_${dbPost}_0000` };
+                            // const payload = { id: 1, user_id: `firs_auso_1111` };
                             const options = { expiresIn: '12h', issuer: 'https://sargatechnology.com' };
                             const secret = 'secret';
                             token = jwt.sign(payload, secret, options);

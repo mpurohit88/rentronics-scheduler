@@ -2,7 +2,7 @@
 const axios = require('axios');
 
 
-const {API_CONSUMER} = require('../config/db.js');
+const { API_CONSUMER } = require('../config/db.js');
 
 
 const PARAMS = ({ methodType = 'GET' }) => ({

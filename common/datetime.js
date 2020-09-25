@@ -25,6 +25,10 @@ module.exports = {
     return moment().subtract(5, 'year').format("YYYY-MM-DD");
   },
 
+  getPrev1YearDate: () => {
+    return moment().subtract(1, 'year').format("YYYY-MM-DD");
+  },
+
   // const getCurrentDate() {
   //   return moment().format("MM/DD/YYYY")
   // }

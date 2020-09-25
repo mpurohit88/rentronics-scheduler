@@ -5,7 +5,7 @@ var fs = require('fs');
 const Scheduler = require('./models/scheduler.js');
 
 const { trans } = require("./mailtransporter");
-const { domainName } = require("./config");
+const { domainName } = require("./config/db.js");
 
 const Mailer = function (params) {
   this.emailId = params.emailId;

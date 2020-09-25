@@ -1,6 +1,6 @@
 // This will be in some JSON config we'll say
 let dbOptions = '';
-const { env } = require("./db");
+const { env } = require("./db.js");
 
 if (env === 'dev' || env === 'uat' || env === 'prod') {
   dbOptions = {

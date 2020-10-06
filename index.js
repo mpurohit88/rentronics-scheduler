@@ -8,7 +8,7 @@ const reports = require('./controllers/reports.js');
 
 
 
-// const cronTime = "*/30 * * * * *";
+// const cronTime = "*/100 * * * * *";
 const cronTime = "00 00 09 * * *";
 
 

@@ -34,7 +34,7 @@ Franchise.prototype.getEzidebitAccountDetails = function () {
       if (error) { throw error; }
 
       connection.changeUser({ database: dbName });
-      let Query = `SELECT f.fdbname, AES_DECRYPT(digital_key, 'rentronics') as digital_key, AES_DECRYPT(user_name, 'rentronics') as user_name, AES_DECRYPT(client_id, 'rentronics') as client_id FROM ezidebit_creds as ec INNER JOIN franchise as f ON f.id = ec.franchise_id WHERE ec.is_active = 1`;
+      let Query = `SELECT f.fdbname, AES_DECRYPT(digital_key, 'rentronics') as digital_key, AES_DECRYPT(user_name, 'rentronics') as user_name, AES_DECRYPT(client_id, 'rentronics') as client_id FROM ezidebit_creds as ec INNER JOIN franchise as f ON f.id = ec.franchise_id WHERE ec.status = 1 AND ec.is_active = 1`;
       connection.query(Query, (error, result, fields) => {
           if (error) { console.log('Error...', error); reject(error); }          
           let decryptResult = [];

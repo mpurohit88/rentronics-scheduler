@@ -15,6 +15,7 @@ const getPayments = async function () {
     const franchise = new Franchise();
 
     await franchise.getEzidebitAccountDetails().then((result) => {
+console.log('ffff',result)
         try {
             const payParams = {};
             payParams.PaymentType = 'ALL';
